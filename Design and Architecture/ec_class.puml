@@ -1,0 +1,42 @@
+@startuml
+class ExpensesCalculator {
++ {static} String XML_FILE
++ {static} String SCHEMA_FILE
++ {static} void main(String[])
+}
+note "NOTE - All the class follows Single Responsibility \nand Open-Closed Principles for e.g: \n Validator class will only Validate \n Parser class will Parse \n Aggregator class will sum up " as N1
+class ExpensesXMLValidator {
++ void validate(String,String)
+}
+ExpensesCalculator -- ExpensesXMLValidator
+class ExpensesXMLParser {
++ void expensesModelList(Path)
+}
+ExpensesXMLValidator -- ExpensesXMLParser
+class ExpensesAggregator {
++ void showAggregatedExpense(List<ExpensesModel>)
+}
+ExpensesXMLParser - ExpensesAggregator
+class CurrencyValueProvider << utility >> {
++ {static} Integer fxRate(String,Date)
+}
+ExpensesAggregator "1..*" o-- "1" CurrencyValueProvider
+class FxDB << (S,#FF7700) Singleton >> {
+- {static} FxDB instance
+- {static} HashMap<Object,Object> currencyMap
+- {static} String YAML_FILE
+- <<Create>> FxDB()
++ {static} HashMap<Object,Object> getCurrencyRateDB()
++ {static} FxDB getInstance()
+}
+note left: << Notation >> \n Returns an unique instance
+CurrencyValueProvider "1..*" o-- "1" FxDB
+class ExpensesModel {
+- String description
+- String currencyType
+- Double amount
+- Date date
+}
+ExpensesXMLParser "1" -- "1..*" ExpensesModel
+FxDB *-- FxDB
+@enduml

@@ -1,0 +1,20 @@
+@startuml get-total-expense
+title sequence diagram for Expense Calculator
+actor Users #Yellow
+Users -> ExpensesCalculator : execute
+ExpensesCalculator -> ExpensesXMLValidator --++ #LightBlue : validate XML
+ExpensesXMLValidator -> ExpensesXMLParser --++ #LightCoral : parse XML
+ExpensesXMLParser -> ExpensesAggregator --++ #005500 : aggregate expenses
+hnote over ExpensesAggregator
+List of ExpensesModel
+objects wil be the input
+endhnote
+loop size of list times
+    ExpensesAggregator -> CurrencyValueProvider ++ #Yellow : apply fx-rate \nfor each transaction
+    CurrencyValueProvider -> FxDB ++ #Red : fetch fx-rate
+    return send fx-rate
+    return fx-rate \napplied for each transaction
+end
+ExpensesAggregator -> ExpensesAggregator : aggregated sum \nof all transactions
+ExpensesAggregator --> Users -- #005500 : view total expenses
+@enduml

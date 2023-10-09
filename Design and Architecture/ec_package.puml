@@ -1,0 +1,33 @@
+@startuml
+class com.striim.ec.ExpensesXMLParser {
++ void expensesModelList(Path)
+}
+class com.striim.ec.ExpensesAggregator {
++ void showAggregatedExpense(List<ExpensesModel>)
+}
+class com.striim.ec.ExpensesXMLValidator {
++ void validate(String,String)
+}
+class com.striim.ec.ExpensesCalculator {
++ {static} String XML_FILE
++ {static} String SCHEMA_FILE
++ {static} void main(String[])
+}
+class com.striim.ec.ExpensesModel {
+- String description
+- String currencyType
+- Double amount
+- Date date
+}
+class com.striim.ec.CurrencyValueProvider {
++ {static} Integer fxRate(String,Date)
+}
+class com.striim.ec.FxDB {
+- {static} FxDB instance
+- {static} HashMap<Object,Object> currencyMap
+- {static} String YAML_FILE
+- <<Create>> FxDB()
++ {static} HashMap<Object,Object> getCurrencyRateDB()
++ {static} FxDB getInstance()
+}
+@enduml
