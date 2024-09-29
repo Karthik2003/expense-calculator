@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ExpensesXMLParser {
     public void expensesModelList(Path path) throws FileNotFoundException, XMLStreamException {
@@ -50,9 +51,9 @@ public class ExpensesXMLParser {
                 EndElement endElement = event.asEndElement();
                 if (endElement.getName().getLocalPart().equals("expense")) {
                     ExpensesModel expensesModel = new ExpensesModel();
-                    expensesModel.setCurrencyType(fXCurrency.strip());
-                    expensesModel.setAmount(Double.valueOf(fxAmount.strip()));
-                    expensesModel.setDate(LocalDate.parse(fxDate.strip(), dateFormatter));
+                    expensesModel.setCurrencyType(Objects.requireNonNull(fXCurrency).strip());
+                    expensesModel.setAmount(Double.valueOf(Objects.requireNonNull(fxAmount).strip()));
+                    expensesModel.setDate(LocalDate.parse(Objects.requireNonNull(fxDate).strip(), dateFormatter));
                     expensesModelList.add(expensesModel);
                 }
             }
